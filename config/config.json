@@ -1,0 +1,20 @@
+{
+  "development": {
+    "username": "ctp_user",
+    "password": "ctp_user",
+    "database": "poll_development",
+    "host": "127.0.0.1",
+    "dialect": "postgresql"
+  },
+  "test": {
+    "username": "DB_USERNAME",
+    "password": "DB_PASSWORD",
+    "database": "poll_development",
+    "host": "127.0.0.1",
+    "dialect": "postgresql"
+  },
+  "production": {
+    "use_env_variable": "postgresql-angular-53463",
+    "dialect": "postgres"
+  }
+}
