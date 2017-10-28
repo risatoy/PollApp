@@ -13,13 +13,13 @@ router.get('/', (req, res) => {
   models.Polls.findAll()
     .then((allPolls) => {
       //res.json(allPolls);
-      res.render('index', {allPolls: allPolls});
+      res.render('./polls/index', {allPolls: allPolls});
     })
 });
 
 // *NEW
 router.get('/new', (req, res) => {
-  res.render('new');
+  res.render('./polls/new');
 });
 
 
@@ -28,12 +28,26 @@ router.get('/new', (req, res) => {
 //  We provide the `question` in the body parameters
 //  Note: this does NOT take an array of choices
 router.post('/', (req, res) => {
+  console.log(req.params.id);
   models.Polls.create({
     question: req.body.question
   })
   .then((poll) => {
-    //res.json(poll);
-    res.redirect("/polls");
+    //res.json(poll);  poll.id = question.id
+    //choices ['yes', 'no', 'maybe', 'leave me alone']
+    var arrayChoices = req.body.choice;
+    var arrayChoiceObjects = new Array();
+    for (var i = 0; i < arrayChoices.length - 1; i++){
+      arrayChoiceObjects.push({
+        description: arrayChoices[i],
+        count: 0,
+        PollId: poll.id
+      });
+    }
+    // arrayChoiceObjects [{ description: 'yes', PollId: poll.id }, { description: 'no', PollId: poll.id }, { description: 'maybe', PollId: poll.id }, { description: 'leave me alone', PollId: poll.id },  ]
+    models.Choices.bulkCreate(arrayChoiceObjects).then((choicearray) => {
+      res.redirect("/polls");
+    });
   })
   .catch(() => {
     res.sendStatus(400);
@@ -51,7 +65,7 @@ router.get('/:id', (req, res) => {
   })
   .then(poll => {
     //res.json(poll);
-    res.render("show", {poll: poll});
+    res.render("./polls/show", {poll: poll});
   });
 });
 
@@ -60,7 +74,7 @@ router.get('/:id/edit', (req, res) => {
   models.Polls.findById(parseInt(req.params.id))
   .then(poll => {
     //res.json(poll);
-    res.render("edit", {poll: poll});
+    res.render("./polls/edit", {poll: poll});
   });
 });
 
