@@ -71,7 +71,11 @@ router.get('/:id', (req, res) => {
 
 // *EDIT
 router.get('/:id/edit', (req, res) => {
-  models.Polls.findById(parseInt(req.params.id))
+  models.Polls.findById(parseInt(req.params.id), {
+    include: [{
+      model: models.Choices
+    }]
+  })
   .then(poll => {
     //res.json(poll);
     res.render("./polls/edit", {poll: poll});
@@ -82,6 +86,7 @@ router.get('/:id/edit', (req, res) => {
 router.put('/:id', (req, res) => {
   models.Polls.findById(parseInt(req.params.id))
  		.then(polls => {
+    //res.json(polls);
  			polls.update({
  				question: req.body.question
  			});
@@ -108,27 +113,25 @@ router.delete('/:id', (req, res) => {
 });
 
 
-
-
 // This route is used for adding a choice for a specific poll
 //  The poll id is in the route parameters
 //  The choice description is in the parameters
-router.post('/:id/choices', (req, res) => {
-  models.Polls.findById(parseInt(req.params.id))
-    .then(poll => {
-      models.Choices.create({
-        description: req.body.description,
-        PollId: poll.id
-      })
-      .then((choice) => {
-        res.json(choice);
-      })
-    })
-    .catch(() => {
-      console.log('error here')
-      res.sendStatus(400);
-    });
-});
+// router.post('/:id/choices', (req, res) => {
+//   models.Polls.findById(parseInt(req.params.id))
+//     .then(poll => {
+//       models.Choices.create({
+//         description: req.body.description,
+//         PollId: poll.id
+//       })
+//       .then((choice) => {
+//         res.json(choice);
+//       })
+//     })
+//     .catch(() => {
+//       console.log('error here')
+//       res.sendStatus(400);
+//     });
+// });
 
 
 module.exports = router;
