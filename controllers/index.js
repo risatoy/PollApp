@@ -4,6 +4,7 @@ const path = require('path');
 
 const router = express.Router();
 const basename = path.basename(module.filename);
+const redirect = require('../middlewares/redirect');
 
 fs
   .readdirSync(__dirname)

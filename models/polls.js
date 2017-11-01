@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Polls.associate = (models) => {
     models.Polls.hasMany(models.Choices);
+    models.Polls.belongsTo(models.User);
   }
 
   return Polls;
