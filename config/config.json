@@ -14,7 +14,7 @@
     "dialect": "postgresql"
   },
   "production": {
-    "use_env_variable": "postgresql-lively-93245",
+    "use_env_variable": "DATABASE_URL",
     "dialect": "postgresql"
   }
 }
